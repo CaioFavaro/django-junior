@@ -15,14 +15,10 @@ class Question(models.Model):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
     def total_votes(self):
-        votes = 0
-        choices = self.choice_set.all()
-        # Faça um laço para somar todos os votos.
-        return votes
+        return sum(choice.votes for choice in self.choice_set.all())
 
     def has_votes(self):
-        # Utilize uma condição para retornar se essa Questão tem ou não votos.
-        return False
+        return any(choice.votes > 0 for choice in self.choice_set.all())
 
 
 class Choice(models.Model):
